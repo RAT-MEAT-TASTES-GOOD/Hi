@@ -1,0 +1,144 @@
+import pygame
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Set up the game window
+WIDTH, HEIGHT = 800, 600
+win = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Open World Game")
+
+# Define colors
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+
+# Load game assets (images, sounds, etc.) if needed
+
+# Set up the game world
+class GameWorld:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.objects = []
+        self.npcs = []
+        self.enemies = []
+
+    # Add object to the game world
+    def add_object(self, obj):
+        self.objects.append(obj)
+
+    # Add NPC to the game world
+    def add_npc(self, npc):
+        self.npcs.append(npc)
+
+    # Add enemy to the game world
+    def add_enemy(self, enemy):
+        self.enemies.append(enemy)
+
+    # Get objects at a specific position
+    def get_objects_at_position(self, x, y):
+        objects_at_position = []
+        for obj in self.objects:
+            if obj.x == x and obj.y == y:
+                objects_at_position.append(obj)
+        return objects_at_position
+
+    # Get NPCs at a specific position
+    def get_npcs_at_position(self, x, y):
+        npcs_at_position = []
+        for npc in self.npcs:
+            if npc.x == x and npc.y == y:
+                npcs_at_position.append(npc)
+        return npcs_at_position
+
+    # Get enemies at a specific position
+    def get_enemies_at_position(self, x, y):
+        enemies_at_position = []
+        for enemy in self.enemies:
+            if enemy.x == x and enemy.y == y:
+                enemies_at_position.append(enemy)
+        return enemies_at_position
+
+    # Update the game world
+    def update(self, player):
+        # Update game logic here
+
+        pass
+
+    # Draw the game world
+    def draw(self, player):
+        # Clear the screen
+        win.fill(WHITE)
+
+        # Draw game objects, NPCs, enemies, and player here
+
+        # Example: Draw player as a green rectangle
+        pygame.draw.rect(win, GREEN, (player.x, player.y, 50, 50))
+
+        # Update the display
+        pygame.display.update()
+
+# Set up the player
+class Player:
+    def __init__(self, name, x, y):
+        self.name = name
+        self.x = x
+        self.y = y
+        self.health = 100
+
+    def move(self, dx, dy):
+        self.x += dx
+        self.y += dy
+
+    # Add other player methods here if needed
+
+# Create the game world
+game_world = GameWorld(WIDTH, HEIGHT)
+
+# Create the player
+player = Player("Player", 100, 100)
+
+# Generate random objects in the game world
+for _ in range(10):
+    x = random.randint(0, WIDTH - 50)
+    y = random.randint(0, HEIGHT - 50)
+    game_world.add_object(Object("Object", x, y))
+
+# Generate random NPCs in the game world
+for _ in range(5):
+    x = random.randint(0, WIDTH - 50)
+    y = random.randint(0, HEIGHT - 50)
+    game_world.add_npc(NPC("NPC", x, y))
+
+# Generate random enemies in the game world
+for _ in range(3):
+    x = random.randint(0, WIDTH - 50)
+    y = random.randint(0, HEIGHT - 50)
+    game_world.add_enemy(Enemy("Enemy", x, y, 20, 5))
+
+# Main game loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                player.move(0, -50)
+            elif event.key == pygame.K_DOWN:
+                player.move(0, 50)
+            elif event.key == pygame.K_LEFT:
+                player.move(-50, 0)
+            elif event.key == pygame.K_RIGHT:
+                player.move(50, 0)
+
+    # Update the game world
+    game_world.update(player)
+
+    # Draw the game world
+    game_world.draw(player)
+
+# Quit the game
+pygame.quit()
